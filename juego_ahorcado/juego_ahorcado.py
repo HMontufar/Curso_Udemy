@@ -90,4 +90,3 @@ while not juego_terminado:
     vidas, terminado, aciertos = chequear_letra(letra, palabra, vidas, aciertos)
 
     juego_terminado = terminado
-    
