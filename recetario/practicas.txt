@@ -1,0 +1,235 @@
+###### Abrir y manipular archivo ######
+
+Practica 1
+
+-- mi_archivo = open('prueba.txt') # abrir archivo
+
+-- mi_archivo.read() # leer archivo, si lo imprimo muestra la informacion
+
+-- mi_archivo.readline() # solo lee una linea al imprimir
+
+-- for l in mi_archivo: # loop for para mostrar las lineas (Otro metodo)
+        print('aqui dice: ' + l)
+
+-- todas = mi_archivo.readlines() # muestra una lista con todos los elementos, recomendado para archivos pequeños
+
+-- print(mi_archivo)
+
+-- mi_archivo.close() # siempre cerrar el archivo, para evitar consumo de memoria
+
+###### Fin practica 1 ######
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+###### Crear y escribir archivos ######
+
+
+Para escribir en un archivo desde Python, deberemos elegir con cuidado el parámetro "modo de apertura".
+
+
+open(arhivo, 'modo')
+
+Parámetros de modo de apertura:
+
+"r"
+- Read (Lectura)
+- Predeterminado. Permite leer pero no escribir, y arroja un error si el archivo no existe.
+
+"a"
+- Append (Añadir)
+- Abre el archivo para añadir líneas a continuación de la última que ya exista en el mismo. Crea un archivo en caso de que el mismo no exista.
+
+"w"
+- Write (Escritura)
+- Abre o crea un archivo (si no existe previamente) en modo de escritura, lo que significa que cualquier contenido previo se sobre escribirá.
+
+"x"
+- Create (Creación)
+- Crea un archivo, y arroja un error si el mismo ya existe en el directorio.
+
+El método write( ) escribe un texto especificado en el argumento sobre el archivo.
+writelines(lista) recibe el texto a ser escrito en forma de lista.
+
+
+Practica 2
+
+- archivo = open('prueba.txt', 'r') # 'r' -> modo lectura, si no se pone nada python toma por defecto el modo lectura
+
+- archivo = open('prueba.txt', 'w') # 'w' -> modo escritura, crea un nuevo archivo si no existe, si existe la información de sobre escribirá
+
+- archivo = open('prueba.txt', 'a') # 'a' -> agregar un elemento 
+
+- archivo.write('soy el nuevo texto') # para escribir dentro de un archivo
+
+- archivo.write('soy el nuevo texto\n') # crear un salto de linea
+
+- archivo.write('''soy el
+nuevo
+texto''') # otra forma de crear el salto de linea
+
+- archivo.writelines(['hola'], ['mundo']) # lista de strings, aunque es mejor con un loop for 
+
+archivo = open('prueba.txt', 'w')
+
+lista = ['hola', 'mundo']
+
+for p in lista:
+    archivo.writelines(p + '\n')
+
+archivo.close()
+
+*******
+
+# Abrir archivo y escribir utilizando el metodo "writelines"
+
+registro_ultima_sesion = ["Federico", "20/12/2021", "08:17:32 hs", "Sin errores de carga"]
+ 
+registro = open("registro.txt","a")
+for item in registro_ultima_sesion:
+    registro.writelines(item +'\t')
+ 
+registro.close()
+registro = open("registro.txt","r")
+print(registro.read())
+
+###### Fin practica 3 ######
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+###### Directorio ######
+
+# se tiene que importar el modulo "os"
+import os
+
+ruta = os.getcwd() # obtenemos la ruta del directorio donde estamos trabajando
+ruta = os.makedirs() # permite crear otra carpeta dentro de un directorio (aqui va la ruta)
+ruta = os.chdir() # cambiamos de ruta (aqui va el cambio de ruta)
+archivo = open('otro_archivo.txt') # al cambiar de ruta podemos acceder a otro archivo y poder leerlo
+
+print(ruta)
+
+####### # nos arroja como resultado el nombre del archivo
+ruta = 'aqui va la ruta, hasta el archivo'
+
+elemento = os.path.basename(ruta) 
+
+
+####### # nos arroja la ruta del directorio
+ruta = 'aqui va la ruta, hasta el archivo'
+
+elemento = os.path.dirname(ruta) 
+
+
+####### # recibir ruta directorio y nombre de archivo en forma de tupla
+ruta = 'aqui va la ruta, hasta el archivo' 
+
+elemento = os.path.split(ruta)
+
+
+####### # eliminar un directorio
+os.rmdir('ruta de directorio')
+
+
+###### Abrir archivos para cualquier SO ######
+
+from pathlib import Path
+
+carpeta = Path('aqui va la dirección ejemplo: c:/carpeta/carpeta/etc o puede ser incluso /carpeta/carpeta/etc')
+archivo = carpeta / 'otro_archivo.txt'
+
+mi_archivo = open(archivo)
+print(mi_archivo.read())
+
+# Otra forma para ahorranos una linea
+carpeta = Path('aqui va la dirección ejemplo: c:/carpeta/carpeta/etc o puede ser incluso /carpeta/carpeta/etc') / 'otro_archivo.txt'
+
+mi_archivo = open(carpeta)
+print(mi_archivo.read())
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+###### Modulo Pathlib ######
+
+
+###### # Importando modulo Path
+
+from pathlib import Path
+
+carpeta = Path("C:/aqui/va/la/ruta/archivo.txt")
+
+print(carpeta.read_text()) # con esto no es necesario abrir ni cerrar el archivo, gracias a los meotodos path
+print(carpeta.name) # obtenemos el nombre del archivo
+print(carpeta.suffix) # obtenemos el tipo de extension del archivo
+print(carpeta.stem) # obtenemos el nombre del archivo sin la extension
+
+# Forma para saber si un archivo existe
+
+carpeta = Path("C:/aqui/va/la/ruta/archivo.txt")
+
+if not carpeta.exists():
+    print("Este archivo no existe")
+else:
+    print("Genial, existe")
+
+
+##### # Importando el modulo PureWindowsPath para adaptar una ruta a windows
+
+from pathlib import Path, PureWindowsPath
+
+carpeta = Path("C:/aqui/va/la/ruta/archivo.txt")
+
+ruta_windows = PureWindowsPath(carpeta)
+
+print(ruta_windows)
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+###### Modulo Path ######
+
+from pathlib import Path
+
+guia = Path("palabra1", "palabra2") # Path construye una ruta de guia a partir de las palabras que uno ingresa
+guia = Path("palabra1", "palabra2.txt") # Path construye una ruta de guia a partir de las palabras que uno ingresa o nombre de archivo
+print(guia)
+
+###### # Ruta absoluta
+
+base = Path.home()
+guia = Path(base, "palabra1", "palabra2.txt") # muestra la ruta de directorio completa
+print(base) # Imprime la ruta base
+print(guia)
+
+### ejemplo
+
+base = Path.home()
+guia = Path(base, "palabra", "palabra", Path("palabra1", "palabra2.txt")) # crea un path a partir de la información proporcionada
+guia2 = guia.with_name("archivo.txt") # se crea una nueva ruta a partir de la ya creada generando un nuevo archivo
+print(guia)
+print(guia.parent) # devuelve el antecesor de una ruta de archivo mas inmediato (devuelve un directorio) puedo colocar n numero de 'parent'
+print(guia2)
+
+### ejercicio 
+
+guia = Path(Path.home(), "carpeta_raiz")
+
+for txt in Path(guia).glob("*.txt"): # muestra todos los archivos que se encuentren en la carpeta raiz
+    print(txt)
+
+for txt in Path(guia).glob("**/*.txt"): # muestra todos los archivos que se encuentren en la carpeta raiz y en todas las subcarpetas
+    print(txt)
+
+# ver el contenido de carpetas especificas
+
+guia = Path("carpeta", "carpeta2", "carpeta3", "archivo.txt")
+en_carpeta1 = guia.relative_to(Path("carpeta"))
+en_carpeta2 = guia.relative_to(Path("carpeta", "carpeta2"))
+print(en_carpeta1)
+print(en_carpeta2)
