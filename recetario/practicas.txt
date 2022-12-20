@@ -233,3 +233,34 @@ en_carpeta1 = guia.relative_to(Path("carpeta"))
 en_carpeta2 = guia.relative_to(Path("carpeta", "carpeta2"))
 print(en_carpeta1)
 print(en_carpeta2)
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+###### Limpiar consola ######
+
+
+Para controlar la información mostrada al usuario en consola
+podemos limpiarla, eliminando los diferentes mensajes que
+han aparecido conforme se va ejecutando el programa.
+
+from os import system
+
+En Unix/Linux/MacOS:
+    system("clear")
+
+En DOS/Windows:
+    system("cls")
+
+Ejemplo
+
+from os import system # Importar 'system' de os para limpiar consola
+
+nombre = input("Dime tu nombre: ")
+edad = input("Dime tu edad: ")
+
+system('cls') # Limpiar consola windows
+system('clear') # Limpiar consola otro SO
+
+print(f"Tu nombre es: {nombre} y tienes {edad} años")
