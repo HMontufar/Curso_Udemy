@@ -1,10 +1,11 @@
 import os
 from pathlib import Path
 from os import system
+import shutil
 
 mi_ruta = Path(Path.home(), 'Recetas')
 
-def contar_recetas(ruta):
+def contar_recetas(ruta): # Funcion para accesar a todos los archivos .txt para saber la cantidd de recetas
     contador = 0
     for archivo in Path(ruta).glob('**/*.txt'):
         contador += 1
@@ -13,8 +14,8 @@ def contar_recetas(ruta):
 
 # Mostrar menu inicio
 
-def inicio():
-    system('cls')
+def inicio(): # Funcion bienvenida al usuario
+    system('cls') # Limpiamos consola
     print("*" * 50)
     print("*" * 5 + " Bienvenido al administrador de recetas " + "*" * 5)
     print("*" * 50)
@@ -24,7 +25,7 @@ def inicio():
 
     eleccion_menu = 'x'
 
-    while not eleccion_menu.isnumeric() or int(eleccion_menu) not in range(1,7):
+    while not eleccion_menu.isnumeric() or int(eleccion_menu) not in range(1,7): # creamos un loop while para asegurarnos que el usuario teclee un numero del 1 al 6
         print("Elige una opción: ")
         print('''
         [1] - Leer receta
@@ -98,7 +99,15 @@ def crear_receta(ruta):
         print("Escribe el nombre de tu receta: ")
         nombre_receta = input() + '.txt'
         print("Escribe tu nueva receta: ")
-        contenido_receta = input()
+        # otro metodo para evitar la tecla 'Enter' a la hora de crear la receta, utilizando una variable y un loop while
+        crear_archivo = '' # 'crear_archivo' reemplaza al 'input()' -> Metodo utilizando la tecla 'Enter'
+        while True:
+            entrada_texto = input()
+            if entrada_texto:
+                crear_archivo += entrada_texto + '\n'
+            else:
+                break # fin del loop while
+        contenido_receta = crear_archivo
         ruta_nueva = Path(ruta, nombre_receta)
 
         if not os.path.exists(ruta_nueva):
@@ -131,7 +140,8 @@ def eliminar_receta(receta):
 
 
 def eliminar_categoria(categoria):
-    Path(categoria).rmdir()
+    shutil.rmtree(categoria) # se eliminan carpetas que contienen información
+    # Path(categoria).rmdir() -> este metodo solo elimina carpetas vacias
     print(f"La categoria {categoria.name} ha sido eliminada")
 
 
@@ -151,8 +161,13 @@ while not finalizar_programa:
         mis_categorias = mostrar_categoria(mi_ruta)
         mi_categoria = elegir_categoria(mis_categorias)
         mis_recetas = mostrar_recetas(mi_categoria)
-        mi_receta = elegir_recetas(mis_recetas)
-        leer_receta(mi_receta)
+
+        if len(mis_recetas) < 1:
+            print("No hay recetas en esta categoria")
+        else:
+            mi_receta = elegir_recetas(mis_recetas)
+            leer_receta(mi_receta)
+        
         volver_inicio()
         
     elif menu == 2:
@@ -169,8 +184,12 @@ while not finalizar_programa:
         mis_categorias = mostrar_categoria(mi_ruta)
         mi_categoria = elegir_categoria(mis_categorias)
         mis_recetas = mostrar_recetas(mi_categoria)
-        mi_receta = elegir_recetas(mis_recetas)
-        eliminar_receta(mi_receta)
+
+        if len(mis_recetas) < 1:
+            print("No hay recetas que eliminar")
+        else:
+            mi_receta = elegir_recetas(mis_recetas)
+            eliminar_receta(mi_receta)
         volver_inicio()
         
     elif menu == 5:
