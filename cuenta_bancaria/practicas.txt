@@ -1,0 +1,268 @@
+///////////////////////////////////////////////
+
+    -- Programación Orientada a Objetos POO-- 
+
+clase   métodos
+        atributos
+        objetos
+
+
+se basa en 6 principios
+    - herencia
+    - polimorfismo
+    - cohesion
+    - abstraccion
+    - acoplamiento
+    - encapsulamiento
+
+
+Practica 1 de una clase basica
+
+class Pajaro:
+    pass
+
+# crear objetos apartir de la clase creada
+
+mi_pajaro = Pajaro() # -> Objeto de pajaro
+otro_pajaro = Pajaro() # -> Otro objeto de pajaro
+
+
+///////////////////////////////////////////////
+
+    - Atributos -
+
+atributos de clase -> Es el mismo atributo para todos los objetos
+atributos de instancia -> Es el atributo que cambia en cada objeto
+
+
+# Practica de atributos
+
+class Pajaro:
+    
+    # Crear metodo contructor, asigna atributos a nuestro objeto
+        # __init__ es el constructor de la clase, creamos los atributos que queremos que se asignen a la clase
+        # self representa los atributos de la instancia del objeto que va a ser creado
+    def __init__(self, color):
+        self.color = color
+
+mi_pajaro = Pajaro('negro') # Se tiene que asignar un valor dentro de los parentesis, en caso un color
+
+print(mi_pajaro.color) # me muestra que el atributo 'color' es 'negro'
+
+'''
+# ejemplo
+
+class Pajaro:
+
+    def __init__(self, mi_parametro):
+        self.atributo = mi_parametro
+
+mi_pajaro = Pajaro('parametro de mi atributo')
+
+print(mi_pajaro.atributo)
+
+'''
+
+# Asignar mas parametros
+
+class Pajaro:
+
+    alas = True # asumimos que todos los pajaros tienen alas
+
+    def __init__(self, color, especie):
+        self.color = color
+        self.especie = especie
+
+mi_pajaro = Pajaro('negro', 'tucan')
+
+print(mi_pajaro.color)
+print(mi_pajaro.especie)
+
+print(f"mi pajaro es un {mi_pajaro.especie} y es de color {mi_pajaro.color}")
+
+    ###### Practica atributos ######
+
+    class Personaje:
+    
+    real = False
+    
+    def __init__(self, especie, magico, edad):
+        self.especie = especie
+        self.magico = magico
+        self.edad = edad
+        
+harry_potter = Personaje('Humano', 'True', 17)
+
+
+///////////////////////////////////////////////
+
+    - Metodos -
+
+__init__
+def volar(self, metros) # volar es el metodo
+
+
+    ###### Practica metodos ######
+
+
+    class Pajaro:
+
+        alas = True
+
+        def __init__(self, color, especie):
+            self.color = color
+            self.especie = especie
+
+        def piar(self):
+            print('pio')
+
+        '''def piar(self):
+            print('pio, mi color es {}'.format(self.color)) 
+            # -> Esta es la forma de mandar llamar un atributo dentro de un metodo'''
+
+        def volar(self, metros):
+            print(f'El pajaro ha volado {metros} metros')
+
+    piolin = Pajaro('amarillo', 'canario')
+
+////// Tipos de metodos ///////
+
+    Decoradores
+
+    - metodos de instancia
+
+        def mi_metodo(self):
+            print("algo")
+        mi_metodo()
+
+        acceden y modifican atributos del objeto
+        acceder a otros metodos
+        modificar el estado de la clase
+
+    - metodos de clase @classmethod
+
+        @classmethod
+        def mi_metodo(cls)
+            print("algo")
+
+        no pueden modificar los atribuos de la instancia, pero si los de la clase
+
+    - metodos estaticos @staticmethod
+
+        @staticmethod
+        def mi_metodo():
+        print("algo")
+
+        no aceptan como parametro ni 'self' ni 'cls', no pueden modificarel estado de la clase ni de la instancia
+        van ligado a una clase concreta
+
+
+        -- Ejemplo --
+
+class Pajaro:
+
+    alas = True
+
+    def __init__(self, color, especie):
+        self.color = color
+        self.especie = especie
+
+    def piar(self):
+        print('pio')
+
+    def volar(self, metros):
+        print(f'El pajaro ha volado {metros} metros')
+        self.piar() # -> metodo de instancia puede acceder a otros metodos
+
+    # metodo de instancia, puede acceder y modificar los atributos
+    def pintar_negro(self):
+        self.color = 'negro'
+
+    # metodo de clase
+    @classmethod
+    def poner_huevos(cls, cantidad):
+        print(f"puso {cantidad} huevos")
+        cls.alas = False # -> se puede acceder a los atributos de la clase
+
+    @staticmethod # no necesita metodos de clase ni de instancia 'self' 'cls'
+    def mirar():
+        print("el pajaro mira")
+
+piolin = Pajaro('amarillo', 'canario')
+
+piolin.alas = False # -> metodo de instancia puede modificar el estado de la clase
+
+Pajaro.poner_huevos(3) # -> no necesitan una instancia para poder ejecutarse
+
+Pajaro.mirar()
+
+
+///////////////////////////////////////////////
+
+    ###### Herencia ######
+
+class Animal:
+
+    def __init__(self, edad, color):
+        self.edad = edad
+        self.color = color
+
+
+    def nacer(self):
+        print("Este animal a nacido")
+
+
+class Pajaro(Animal):
+    pass
+
+
+piolin = Pajaro(2, 'amarillo')
+
+piolin.nacer(piolin.color)
+
+print(Pajaro.__bases__) # __bases__ nos indica de que clase esta heredando pajaro
+print(Animal.__subclasses__()) # __subclases__ nos muestra a que subclases hereda animal
+
+ 
+ ###### Herencia extendida ######
+
+class Animal:
+
+    def __init__(self, edad, color):
+        self.edad = edad
+        self.color = color
+
+
+    def nacer(self):
+        print("Este animal a nacido")
+
+    def hablar(self):
+        print("Este animalemite un sonido")
+
+
+
+class Pajaro(Animal):
+
+    # Podemos crear metodos nuevos en este caso 'altura_vuelo'
+    def __init__(self, edad, color, altura_vuelo):
+        # super().__init__(edad, color) -> con esta forma heredamos los metodos de otra clase
+        self.edad = edad # heredar metodos de otra clase
+        self.color = color # heredar metodos de otra clase
+        self.altura_vuelo = altura_vuelo
+
+    def hablar(self):
+        print('pio')
+
+    def volar(self, metros):
+        print(f"El pajaro vuela {metros} metros")
+
+
+
+piolin = Pajaro(2, 'amarillo', 60)
+mi_animal = Animal(5, 'negro')
+
+piolin.volar(100)
+
+
+    ###### Herencia multiple ######
+
