@@ -209,7 +209,7 @@ class Animal:
 
 
     def nacer(self):
-        print("Este animal a nacido")
+        print("Este animal ha nacido")
 
 
 class Pajaro(Animal):
@@ -237,7 +237,7 @@ class Animal:
         print("Este animal a nacido")
 
     def hablar(self):
-        print("Este animalemite un sonido")
+        print("Este animal emite un sonido")
 
 
 
@@ -245,9 +245,9 @@ class Pajaro(Animal):
 
     # Podemos crear metodos nuevos en este caso 'altura_vuelo'
     def __init__(self, edad, color, altura_vuelo):
-        # super().__init__(edad, color) -> con esta forma heredamos los metodos de otra clase
-        self.edad = edad # heredar metodos de otra clase
-        self.color = color # heredar metodos de otra clase
+        # super().__init__(edad, color) -> con esta forma heredamos los metodos de otra clase y evitamos las lines de codigo siguientes y solo agregamos la nueva
+        self.edad = edad # heredar metodos de otra clase --- con el metodo "super" evitamos esta linea de codigo
+        self.color = color # heredar metodos de otra clase --- con el metodo "super" evitamos esta linea de codigo
         self.altura_vuelo = altura_vuelo
 
     def hablar(self):
@@ -266,3 +266,127 @@ piolin.volar(100)
 
     ###### Herencia multiple ######
 
+class Padre:
+    def hablar(self):
+        print("hola")
+
+
+class Madre:
+    def reir(self):
+        print("ja ja ja")
+
+    def hablar(self):
+        print("que tal")
+
+
+class Hijo(Padre, Madre): # Podemos heredar multiples clases, siempre respeta el orden en que se colocan
+    pass
+
+
+class Nieto(Hijo): # Hereda todos los atributos de Padre, Madre e Hijo
+    pass
+
+
+mi_nieto = Nieto()
+
+mi_nieto.reir()
+mi_nieto.hablar()
+
+
+    ###### Polimorfismo ######
+
+class Vaca:
+
+    def __init__(self, nombre):
+        self.nombre = nombre
+
+    def hablar(self):
+        print(self.nombre + " dice muuu")
+
+
+class Oveja:
+    def __init__(self, nombre):
+        self.nombre = nombre
+
+    def hablar(self):
+        print(self.nombre + " dice beee")
+
+
+vaca1 = Vaca('Aurora')
+oveja1 = Oveja('Nube')
+
+# de esta forma podemos invocar distintas clases con los mismos metodos
+vaca1.hablar()
+oveja1.hablar()
+
+# Realizando un loop for
+
+animales = [vaca1, oveja1]
+
+for animal in animales:
+    animal.hablar()
+
+
+# Realizando una funcion
+
+def animal_habla(animal):
+    animal.hablar()
+
+animal_habla(vaca1)
+
+
+    ###### Metodos Especiales ######
+
+Son metodos que tienen 2 guiones al principio y 2 guiones al final
+
+__init__ -> Inicializar los atributos de una clase nueva
+__mro__ -> Ordenar la busqueda de metodos heredados
+
+
+# Usando el metodo len
+
+mi_lista = [1,1,1,1,1,1]
+print(len(mi_lista))
+
+
+# En este caso no aplica el metodo len, ya que genera error
+
+class Objeto:
+    pass
+
+mi_objeto = Objeto()
+print(len(mi_objeto))
+
+# Usando el metodo __str__ para ordenar la infomacion, como se requiera
+
+class CD:
+    def __init__(self, autor, titulo, canciones):
+        self.autor = autor
+        self.titulo = titulo
+        self.canciones = canciones
+
+    # "__str__" Con este metodo nos ayuda a acomodar la informacion de acuerdo a lo requerido
+
+    def __str__(self):
+        return f"Album: {self.titulo} de {self.autor}"
+
+
+    # "__len__" Con este metodo obtenemos el largo de un elemento sin que genere error
+
+    def __len__(self):
+        return self.canciones
+
+
+    # "__del__" Con este metodo eliminamos algun elemento arrojando un mensaje de por medio
+
+    def __del__(self):
+        print("Se ha eliminado el cd")
+
+
+mi_cd = CD('Pink floyd', 'The wall', 24)
+
+print(mi_cd)
+
+print(len(mi_cd))
+
+del mi_cd
