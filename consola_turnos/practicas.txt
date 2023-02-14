@@ -1,0 +1,295 @@
+*** Librerias o Paquetes Python ***
+
+Pypi - Repositorio de codigo abierto de terceros
+    pip install
+
+    se ejecuta cmd y se corre el comando
+        pip install "libreria"
+
+    despues ejecutamos Python
+
+
+###### Modulos ######
+
+Puedo importar modulos de otros archivos
+para realizar la imporacion se requiere el siguiente codigo
+
+    from NombreArchivo import funcion
+
+###### Paquetes ######
+
+Se crea un nuevo proyecto y se crea un nuevo archivo __init__.py vacio
+
+Para importar un paquete se ejecuta el siguiente codigo
+    from Carpeta import funcion
+
+Para importar un subpaquete
+    from Carpeta.Subcarpeta import archivo
+
+
+###### Manejo de errores ######
+
+try -> intenta esto...
+
+except -> si sale mal, haz esto...
+
+finaly -> pase lo que pase, haz esto...
+
+ *** Ejemplo ***
+
+ def suma():
+    n1 = int(input("numero 1: "))
+    n2 = int(input("numero 2: "))
+    print(n1 + n2)
+    print("gracias por sumar")
+
+suma()
+
+numero 1: 15
+numero 2: fede
+
+Esto arroja un error de tipo: ValueError
+
+Ejemplo
+
+try:
+    # Codigo que queremos probar
+    suma()
+except:
+    # Codigo a ejecutar si no hay un error
+    print("algo no ha salido bien")
+else:
+    # Codigo a ejecutar si no hay un error (else se utiliza mas que finally)
+    print("Hiciste todo bien")
+finally:
+    # codigo que se ejecuta de todos modos
+    print("Eso fue todo")
+
+    *******************
+
+    except TypeError: # con el except podemos capturar en especifico un error en este caso TypeError
+        # Codigo a ejecutar si no hay un error
+        print("algo no ha salido bien")
+    except ValueError:
+        print("ese no es un numero")
+
+    *******************
+
+    Ejemplo
+
+    def pedir_numero():
+
+        while True:
+            try:
+                numero = int(input("dame un numero:"))
+            except:
+                print("Ese no es un numero")
+            else:
+                print(f"Ingresaste el numero {numero}")
+                break
+
+        print("Gracias")
+
+    pedir_numero()
+
+
+    ###### Buscar errores ######
+
+    ====== pylint ======
+
+        instalar libreria: pip install pylint
+
+        para buscar un error en mi archivo
+            nos dirigimos a la ruta del archivo y ejecutamos:
+            pylint archivo.py -r y
+            (-r = report & y = confirmar)
+
+    ************* Module consola_turnos
+    consola_turnos.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+    consola_turnos.py:1:0: C0103: Constant name "numero1" doesn't conform to UPPER_CASE naming style (invalid-name)
+    consola_turnos.py:3:6: E0602: Undefined variable 'Numero1' (undefined-variable)
+    ...
+    
+    *** Esta es una buena convencio de organizar el codigo
+
+        """
+        Este es un modulo que imprime algo
+        """
+
+
+        def una_funcion():
+            numero1 = 500
+            print(numero1)
+
+
+        una_funcion()
+
+    
+    *** Otro ejemplo
+
+    '''
+    Este módulo contiene una sencilla función de suma,
+    y ejecuta un ejemplo mostrando el resultado en pantalla
+    '''
+
+
+    def sumar(numero1, numero2):
+
+        """
+        Esta función recibe dos argumentos numéricos
+        y devuelve su suma
+        """
+
+        return numero1 + numero2
+
+
+    SUMA = sumar(5, 7)
+
+
+print(f'El resultado de la suma fue: {SUMA}')
+
+
+    ====== unnitest ======
+
+ *** Archivo origen
+
+    def nombre_funcion(texto):
+    return texto.upper()
+
+*** Archivo donde se realizara el test
+
+    import unittest
+    import mimodulo
+
+    class ProbarCambiaTexto(unittest.TestCase):
+
+        def test_mayusculas(self):
+            palabra = 'buen dia'
+            resultado = mimodulo.nombre_funcion(palabra)
+            self.assertEqual(resultado, 'BUEN DIA')
+
+
+    if __name__ == '__main__':
+        unittest.main()
+
+
+    ====== Decoradores ======
+
+    Son funciones que modifican el comportamiento de otras funciones y ayudan a acortar nuestro codigo
+
+
+    --- Jugando con algunos objetos dentro de las funciones
+
+        def cambiar_letras(tipo):
+
+            def mayuscula(texto):
+                print(texto.upper())
+
+            def minuscula(texto):
+                print(texto.lower())
+
+
+            if tipo == 'may':
+                return mayuscula
+            elif tipo == 'min':
+                return minuscula
+
+
+        operacion = cambiar_letras('may')
+
+        operacion('palabra')
+
+
+    --- ejemplo de decorador
+
+        def decorar_saludo(funcion):
+
+            def otra_funcion(palabra):
+                print('hola')
+                funcion(palabra)
+                print('adios')
+            return otra_funcion
+
+
+
+        def mayuscula(texto):
+            print(texto.upper())
+
+        def minuscula(texto):
+            print(texto.lower())
+
+
+        mayuscula_decorada = decorar_saludo(mayuscula)
+
+        mayuscula_decorada('palabra')
+
+
+###### Generadores ######
+
+Son un tipo especial de funcion, se va produciendo poco a poco, para no ocupar tanto espacio en memoria
+
+usamos la parabla 'yield' = producir
+
+- Ejemplo
+
+    def mi_funcion():
+        return 4
+
+
+    def mi_generador():
+        yield 4
+
+
+    print(mi_funcion()) # Arroja como resultado el numero 4
+    print(mi_generador()) # Arroja como resultado un espacio en memoria
+
+
+    g = mi_generador()
+
+    print(next(g)) # de esta forma arroja el resultado esperado gracias a la palabra 'next'
+
+
+- Ejemplo 2
+
+    def mi_funcion():
+    lista = []
+    for x in range(1, 5):
+        lista.append(x * 10)
+    return lista
+
+
+    def mi_generador():
+        for x in range(1, 5):
+            yield x * 10
+
+
+    print(mi_funcion()) # Arroja como resultado el numero 4
+    print(mi_generador()) # Arroja como resultado un espacio en memoria
+
+
+    g = mi_generador()
+
+    print(next(g)) # de esta forma arroja el resultado esperado gracias a la palabra 'next'
+    print(next(g))
+    print(next(g))
+
+
+-- Ejemplo 3
+
+    def mi_generador():
+        x = 1
+        yield x
+
+
+        x +=1
+        yield x
+
+        x +=1
+        yield x
+
+
+    g = mi_generador()
+
+    print(next(g))
+    print(next(g))
+    print(next(g))
