@@ -1,0 +1,95 @@
+============ Extraer elementos de un html =============
+
+
+import bs4
+import requests
+
+
+resultado = requests.get('https://escueladirecta-blog.blogspot.com/')
+
+print(resultado.text) # Conocer el contenido del resultado
+
+sopa = bs4.BeautifulSoup(resultado.text, 'lxml') # convertir un string para poder navegar dentro de los componentes
+
+print(sopa)
+
+print(sopa.select('h1')) # para imprimir una etiqueta en especifico
+
+print(sopa.select('title')[0]) # para acceder al indice 0 de la lista
+
+print(sopa.select('title')[0].getText()) # para acceder al elemento sin etiquetas
+
+parrafo_especial = sopa.select('p')[3].getText() # para acceder a un elemento en especial
+print(parrafo_especial)
+
+
+  ******* Ejemplo *******
+
+resultado = requests.get('https://escueladirecta-blog.blogspot.com/')
+
+print(resultado.text) # Conocer el contenido del resultado
+
+sopa = bs4.BeautifulSoup(resultado.text, 'lxml') # convertir un string para poder navegar dentro de los componentes
+
+columna_lateral = sopa.select('.sidebar-block') # obtener una clase
+columna_lateral = sopa.select('.content p') # obtener los elementos mas los parrafos
+print(columna_lateral)
+
+
+# obtener todos los elementos por medio de un for
+columna_lateral = sopa.select('.content p')
+
+for p in columna_lateral:
+    print(p.getText)
+
+
+================ Extraer imagenes ==================
+
+
+resultado = requests.get('https://escueladirecta-blog.blogspot.com/')
+
+
+sopa = bs4.BeautifulSoup(resultado.text, 'lxml') # convertir un string para poder navegar dentro de los componentes
+
+imagenes = sopa.select('img')
+print(imagenes) # Te muestra todas las imagenes de un sitio en una lista
+
+for i in imagenes: # Para obtener un listado de todas las imagenes con ulr´s
+    print(i)
+
+imagenes = sopa.select('.course-bos-image')[0]['src'] # solamente busca el elemento fuente de estos elementos
+print(imagenes)
+
+imagen_curso_1 = requests.get(imagenes)
+print(imagen_curso_1.content) # arroja un resultado en codigo binario
+
+f = open('mi_imagen.jpg', 'wb') # 'wb' significa escribir binario y descarga la imagen
+f.write(imagen_curso_1.content)
+f.close
+
+
+============= Scriping de varios sitios web ===============
+
+
+url_base = 'https://books.toscrape.com/catalogue/page-{}.html'
+
+'''for n in range(1, 11): # Obtenemos el rango de paginas
+    print(url_base.format(n))'''
+
+resultados = requests.get(url_base.format('1'))
+sopa = bs4.BeautifulSoup(resultados.text, 'lxml')
+
+#print(sopa.select('.product_pod'))
+libros = sopa.select('.product_pod')
+
+ejemplo = libros[0].select('.star-rating.Three') # obtener libros con 3 estrellas
+print(ejemplo)
+
+ejemplo = libros[0].select('a')[1]['title'] # obtener titulo del libro
+print(ejemplo)
+
+
+============= Combinar intems buscados ===============
+
+
+
