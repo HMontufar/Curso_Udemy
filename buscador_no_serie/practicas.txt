@@ -1,0 +1,388 @@
+# Utilizando el metodo 'Counter' lo podemos utilizar para saber la cantidad de numeros, letras o frases repetidas en modo de diccionario
+
+from collections import Counter
+from collections import defaultdict
+from collections import namedtuple
+
+
+numeros = [8,4,5,7,8,9,6,4,3,2,1,1,2,3,4,8]
+print(Counter(numeros))
+    # Resultado = Counter({8: 3, 4: 3, 3: 2, 2: 2, 1: 2, 5: 1, 7: 1, 9: 1, 6: 1})
+
+frase = 'al pan pan y al vino vino'
+
+print(Counter(frase.split()))
+    # Resultado Counter({'al': 2, 'pan': 2, 'vino': 2, 'y': 1})
+
+
+serie = Counter([1,1,1,1,1,2,2,2,2,3,3,3,3,3])
+# print(serie.metodo)
+
+
+=== defaultdict ===
+
+mi_dic = defaultdict(lambda: 'nada') # se utiliza para mostrar un mensaje cuando no existe algo
+
+mi_dic = {'uno':'verde', 'dos':'azul', 'tres':'rojo'}
+print(mi_dic)
+
+mi_diccionario = defaultdict(lambda: "Valor no hallado")
+
+mi_diccionario['edad']=44
+
+
+=== namedtuple ===
+# Con este metodo podemos acceder a un elemento en especifico de una tupla
+
+mi_tupla = (500, 18, 65)
+print(mi_tupla[1])
+
+Persona = namedtuple('Persona', ['nombre', 'altura', 'peso'])
+ariel = Persona('ariel', 1,76, 79)
+
+print(ariel.altura) 
+
+
+======================================================
+
+
+Modulo OS y SHUTIL
+
+# Muestra el directorio en donde estamos trabajando
+import os
+import shutil
+print(os.getcwd())
+
+# Crear un archivo en el directorio actual
+
+archivo = open('archivo.txt', 'w'
+archivo.write('texto de prueba'))
+archivo.close()
+
+# Como mover archivos
+shutil.move('archivo.txt', 'C:\\ruta\\nueva')
+
+# Eliminar archivos
+os.unlink() -> Elimina un archivo en una ruta que nosotros le preveemos
+os.rmdir() -> Elimina una carpeta vacia que se encuentre en la ruta que asignemos
+
+shutil.rmtree() -> Elimina todo lo de una ruta que le asignemos(ELIMINA DE FORMA PERMANENTE)
+
+    # Alternativa
+    instalar desde la consola un modulo alternativo (envia lo eliminado a la papelera)
+    pip install send2trash
+
+    import send2trash
+
+    send2trash.send2trash('archivo_a_eliminar.txt') -> este metodo envia lo eliminado a la papelera
+
+
+# Metodo WALK
+
+ruta = 'C:\\ruta\ruta\ruta\ruta'
+
+for carpeta, subcarpeta, archivo in os.walk(ruta):
+    print(f"En la carpeta: {carpeta}")
+    print(f"Las subcarpetas son:")
+    for sub in subcarpeta:
+        print(f'\t{sub}')
+    print('Los archivos son:')
+    for arch in archivo:
+        if arch.startswith('dato') -> para buscar un dato en especifico
+            print(f'\t{arch}')
+    print('\n')
+
+
+============================================================
+
+
+from datetime import datetime
+from datetime import date # Establece un rango de fecha
+import datetime
+
+mi_hora = datetime.time(17, 35) -> Establecemos la hora y minutos, si no ponemos mas datos el sistema los llena automaticamente
+print(mi_hora)
+
+# Fechas
+
+mi_dia = datetime.date(2025, 10, 17) -> Para establecer fechas
+print(mi_dia.ctime()) -> formato de fecha
+print(mi_dia.today()) -> muestra el dia actual
+
+# Combinar fecha y hora
+
+                # Año, Mes, Dia, Hora, Minutos, Segundos, Microsegundos
+mi_fecha = datetime(2025, 5, 15, 22, 10, 15, 2500)
+
+# Forma para cambiar un dato dentro de la fecha
+mi_fecha = mi_fecha.replace(month = 11)
+print(mi_fecha)
+
+
+# Utilizando "date"
+
+nacimiento = date(1995, 3, 5)
+defuncion = date(2095, 6, 19)
+
+vida = defuncion - nacimiento
+
+print(vida)
+print(vida.days)
+
+
+despierta = datetime(2022, 10, 5, 7, 30)
+duerme = datetime(2022, 10, 23, 45)
+
+vigilia = duerme - despierta
+
+print(vigilia)
+print(vigilia.seconds)
+
+
+=============================================================
+
+
+# Modulos para medir tiempo de tu codigo 'time' 'timeit'
+import time
+import timeit
+
+
+def prueba_for(numero):
+    lista = []
+    for num in range(1, numero + 1):
+        lista.append(num)
+    return lista
+
+
+def prueba_while(numero):
+    lista = []
+    contador = 1
+    while contador <= numero:
+        lista.append(contador)
+        contador += 1
+    return lista
+
+
+declaracion = '''
+prueba_for(10)
+'''
+
+mi_setup = '''
+def prueba_for(numero):
+    lista = []
+    for num in range(1, numero + 1):
+        lista.append(num)
+    return lista
+'''
+duracion = timeit.timeit(declaracion, mi_setup, number = 100000)
+print(duracion)
+
+'''
+Utilizando el metodo time para medir tiempos de ejecucion
+
+inicio = time.time()
+prueba_for(15)
+final = time.time()
+
+print(final - inicio)
+
+inicio = time.time()
+prueba_while(15)
+final = time.time()
+print(final - inicio)
+'''
+
+===========================================================
+
+# Modulo math
+
+import math
+
+
+resultado = math.floor(89.665) # redondea hacia abajo
+resultado = math.ceil(89.665) # redondea hacia arriba
+resultado = math.log(25, 5) # funcion de logaritmo
+resultado = math.tan(2565) # tangente
+resultado = math.cos(2565) # coseno
+
+
+============================================================
+
+
+# Modulo RE
+
+# -> Carcateres especiales
+
+/d - digito numerico - v\d.\d\d
+/w - caracter alfanumerico \w\w\w-\w\w
+/s - espacio en blanco - numero\s\d\d
+/D - No es numerico - \D\D\D\D
+/W - No es alfanumerico - \W\W\W
+/S - No es un espacio en blanco - \S\S\S
+
+
+# Patrones de busqueda mas complejos
+
+import re
+
+# Ejemplo con operadores especiales
+
+texto = "No atendemos los lunes por la tarde"
+
+buscar = re.search(r'lunes|martes', texto) # -> operador especial |
+buscar = re.search(r'.demos', texto) # -> operador especial . = ndemos
+buscar = re.search(r'....demos', texto) # -> operador especial . = atendemos
+buscar = re.search(r'....demos...', texto) # -> operador especial . = atendemos lo
+buscar = re.search(r'^\D', texto) # -> muestra el primer caracter siempre y cuando sea un digito y no un numero
+buscar = re.search(r'\D$', texto) # -> muestra el digito al final
+buscar = re.findall(r'[^\s]', texto) # -> excluye todos los espacios vacios
+buscar = re.findall(r'[^\s]+', texto) # -> corta los espacios y muestra las palabras en una lista
+
+print(buscar)
+print(''.join(buscar)) # -> une todas las palabras de buscar = re.findall(r'[^\s]+', texto)
+
+
+  ////// ejemplo ////////
+
+import re
+
+texto = "Si necesitas ayuda llama al (658)-598-9977 las 24 horas al servicio de ayuda online"
+
+patron = 'nada' # -> esta palabra no existe al imprimir muestra en pantalla 'false'
+patron = 'ayuda' # -> esta palabra si existe al imprimir muestra en pantalla 'true' y el indice donde se localiza
+
+busqueda = re.search(patron, texto) # Aqui solo muestra una sola palabra encontrada
+print(busqueda)
+print(busqueda.span()) # -> Arroja el indice de la palabra encontrada
+print(busqueda.start()) # -> Inicio del indice
+print(busqueda.end()) # -> final del indice
+
+
+busqueda = re.findall(patron, texto) # Muestra una lista de las palabras encontradas
+print(busqueda)
+
+# Para acceder a cada uno de los elementos encontrados
+
+for hallazgo in re.finditer(patron, texto):
+    print(hallazgo.span())
+
+
+   /////// ejemplo ///////
+
+import re
+
+texto = "Llama al 564-253-5894 ya mismo"
+
+patron = r'\d\d\d-\d\d\d-\d\d\d\d'
+patron = r'\d{3}-\d{3}-\d{4}' # -> una forma mas compacta de realizar la misma tarea
+patron = re.compile(r'\d{3}-\d{3}-\d{4}') # -> compilando
+
+resultado = re.search(patron, texto)
+
+print(resultado) # -> Nos da como resultado el numero, ademas nos da su indice inicial y final
+print(resultado.group()) # -> Nos arroja como resultado el numero encontrado
+print(resultado.group(2)) # -> cuando se compila podemos colocar que elemento queremos que nos muestre
+
+
+   ///////// ejemplo practico /////////
+
+
+# Ejemplo practico
+
+clave = input("clave: ")
+
+# Patron para indicar que el input debe iniciar con una letra y debe cumplir cierto numero de caracteres
+patron = r'\D{1}\w{7}'
+
+chequear = re.search(patron, clave)
+
+print(chequear)
+
+
+   /////// Validar una direccion de correo electronico ///////
+
+   import re
+
+def verificar_email(email):
+    patron = r'@\w+\.com'
+    validar = re.search(patron, email)
+    
+    if validar:
+        print("Ok")
+    else:
+        print("La dirección de email es incorrecta")
+
+
+   /////// Validar que inicie con una palabra (Hola) ///////
+
+
+   import re
+
+def verificar_saludo(frase):
+    patron = r'Hola'
+    validar = re.search(patron, frase)
+    
+    if validar:
+        print("Ok")
+    else:
+        print("No has saludado")
+
+
+    /////// Validar dos caracteres alfanuméricos y cuatro numéricos (ejemplo: XX1234) ///////
+
+
+import re
+
+def verificar_cp(cp):
+    patron = r'\w\d{4}'
+    validar = re.search(patron, cp)
+    
+    if validar:
+        print("Ok")
+    else:
+        print("El código postal ingresado no es correcto")  
+
+
+============================================================================
+
+
+# Comprimir y descomprimir archivos
+
+import zipfile
+
+# Comprimir
+
+mi_zip = zipfile.ZipFile('archivo_comprimido.zip', 'w') # -> vamos a crear la carpeta zip
+
+mi_zip.write('mi_texto.txt') # -> archivo a comprimir
+mi_zip.write('mi_texto_2.txt') # -> archivo a comprimir
+
+mi_zip.close()
+
+
+# Descomprimir
+
+zip_abierto = zipfile.ZipFile('archivo_comprimido.zip', 'r')
+
+zip_abierto.extractall() # Extrae toda la informacion del zip
+
+
+        ////////////////////////
+
+
+# Comprimir
+
+
+import shutil
+
+carpeta_origen = 'C:\\ruta\\ruta\\ruta\\carpeta'
+
+archivo_destino = 'todo_comprimido'
+
+shutil.make_archive(archivos_destino, 'zip', carpeta_origen)
+
+
+# Descomprimir
+
+
+shutil.unpack_archive('todo_comprimido.zip', 'Extraccion terminada', 'zip')
